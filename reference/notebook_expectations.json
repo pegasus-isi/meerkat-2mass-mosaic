@@ -1,0 +1,121 @@
+{
+  "_comment": "Derived from MeerKAT.ipynb's saved outputs by bin/extract_notebook_refs.py. Do not edit by hand.",
+  "source_notebook": "MeerKAT.ipynb",
+  "bands": {
+    "J": {
+      "raw_downloaded": 479,
+      "raw_in_table": 479,
+      "raw_badfits": 0,
+      "raw_badwcs": 0,
+      "projexec_attempted": 479,
+      "projexec_failed": 0,
+      "projexec_nooverlap": 0,
+      "overlap_pairs": 2133,
+      "difffit_pairs": 2133,
+      "diff_failed": 1,
+      "fit_failed": 6,
+      "images_in_coadd": 471,
+      "nocorrection": 0,
+      "bgexec_failed": 0,
+      "corrected_in_table": 471,
+      "uncorrected_add_seconds": 11.0,
+      "corrected_add_seconds": 10.0
+    },
+    "H": {
+      "raw_in_table": 479,
+      "raw_badfits": 0,
+      "raw_badwcs": 0
+    },
+    "K": {
+      "raw_in_table": 479,
+      "raw_badfits": 0,
+      "raw_badwcs": 0
+    }
+  },
+  "notes": [
+    "Notebook wall clock 2024-08-09 13:26:10 -> 2024-08-09 14:16:36. MontagePy 2.2.0 was released 2024-05-05 and 2.3.0 on 2025-06-05, so this run used 2.2.0; the container pins that version.",
+    "Cell 11 prints 'mImgtbl (projected)' using the mProjExec return value (rtn is never reassigned from the mImgtbl call), so the projected-image count is NOT reported by the notebook. The real number of images reaching the coadd is mBgExec's count (471 for J), meaning roughly 8 of 479 raw images per band yield no usable projection.",
+    "Only the J band prints full diagnostics. H and K print just the raw image count, so overlap/coadd expectations for H and K are unknown from the notebook alone and are checked against the Tier 3 local baseline.",
+    "mDiffFitExec reported diff_failed=1 and fit_failed=6 for J: per-pair failures are normal and must not fail the workflow."
+  ],
+  "region": {
+    "lon_centre_deg": 266.37081688220496,
+    "lat_centre_deg": -29.22153052692637,
+    "size_deg": 3.2165880120000003,
+    "thumbnail_width": 961,
+    "thumbnail_height": 1000
+  },
+  "meerkat_header_ncard": 38,
+  "mosaic": {
+    "nx": 10121,
+    "ny": 10527
+  },
+  "j_uncorrected_viewer": {
+    "type": "grayscale",
+    "bunit": "JY/BEAM",
+    "graydatamin": -41.0209846496582,
+    "graydatamax": 11176.1787109375,
+    "grayminval": 27.89344589703572,
+    "graymaxval": 11176.1787109375,
+    "grayminsigma": -2.0,
+    "graymaxsigma": 233.56209167125172,
+    "colortable": 1,
+    "flipY": 1
+  },
+  "notebook_run": {
+    "first_timestamp": "2024-08-09 13:26:10",
+    "last_timestamp": "2024-08-09 14:16:36",
+    "timestamp_count": 20
+  },
+  "thumbnails": {
+    "uncorrected_small.png": {
+      "cell": 15,
+      "width": 961,
+      "height": 1000,
+      "bytes": 1735932,
+      "sha256": "53559ab1729708d34ab54429312d7a002df742d096b83161860e20256379c476"
+    },
+    "2massj_small.png": {
+      "cell": 21,
+      "width": 961,
+      "height": 1000,
+      "bytes": 2257251,
+      "sha256": "22be4ede158609793013daf0b4e16334ad119f3f73a277ad664459c4927bce1b"
+    },
+    "2massh_small.png": {
+      "cell": 26,
+      "width": 961,
+      "height": 1000,
+      "bytes": 2310035,
+      "sha256": "78795e55d8e0145c27421fe15f699100b9bbb5d724c9536521b3dcc71c0e4737"
+    },
+    "2massk_small.png": {
+      "cell": 30,
+      "width": 961,
+      "height": 1000,
+      "bytes": 2366603,
+      "sha256": "e3d6a11c64a98ba2950e75aba170b10675d914506616d590d073b762fa3a03e4"
+    },
+    "2MASS_small.png": {
+      "cell": 32,
+      "width": 961,
+      "height": 1000,
+      "bytes": 2744057,
+      "sha256": "0be2ffbed6af27aa2444dfe242c6ca96ae181791b8e77ccb4de2991348fa9582"
+    },
+    "MeerKAT_small.png": {
+      "cell": 34,
+      "width": 961,
+      "height": 1000,
+      "bytes": 637097,
+      "sha256": "475343c6c7485bfddaebdcc8186d34c5739d5b16d6aeb13282861b600807b227"
+    },
+    "MeerKAT_2MASS_small.png": {
+      "cell": 36,
+      "width": 961,
+      "height": 1000,
+      "bytes": 2521241,
+      "sha256": "10c41e4134bbe9926a84b60732c0b75a516360bf4dc703de9ebd82ed6e5b2ec6"
+    }
+  }
+}

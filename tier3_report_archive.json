@@ -1,0 +1,1109 @@
+{
+  "verdict": "pass",
+  "passed": 109,
+  "failed": 0,
+  "skipped": 0,
+  "warnings": 0,
+  "subset": 0,
+  "tolerances": {
+    "pixel_relative": 0.0001,
+    "ssim_min": 0.98,
+    "psnr_min": 35.0,
+    "max_mean_abs": 2.0,
+    "fits_relative": 1e-06,
+    "min_coadd_images": 460,
+    "max_fit_failed": 25
+  },
+  "checks": [
+    {
+      "name": "region centre longitude",
+      "tier": 1,
+      "pass": true,
+      "expected": 266.37081688220496,
+      "actual": 266.37081688220496,
+      "tolerance": 1e-09,
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "region centre latitude",
+      "tier": 1,
+      "pass": true,
+      "expected": -29.22153052692637,
+      "actual": -29.221530526926376,
+      "tolerance": 1e-09,
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "region size (deg)",
+      "tier": 1,
+      "pass": true,
+      "expected": 3.2165880120000003,
+      "actual": 3.2165880120000003,
+      "tolerance": 1e-09,
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail width",
+      "tier": 1,
+      "pass": true,
+      "expected": 961,
+      "actual": 961,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail height",
+      "tier": 1,
+      "pass": true,
+      "expected": 1000,
+      "actual": 1000,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band H raw image count",
+      "tier": 1,
+      "pass": true,
+      "expected": 479,
+      "actual": 479,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band H chunks reported",
+      "tier": 1,
+      "pass": true,
+      "expected": ">0",
+      "actual": 15,
+      "tolerance": null,
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "band H images in coadd",
+      "tier": 1,
+      "pass": true,
+      "expected": ">= 460 (notebook: None)",
+      "actual": 471,
+      "tolerance": "floor",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band H plane-fit failures within budget",
+      "tier": 1,
+      "pass": true,
+      "expected": "<= 25 (notebook J: None)",
+      "actual": 5,
+      "tolerance": "budget",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band H reprojection attrition",
+      "tier": 1,
+      "pass": true,
+      "expected": ">0",
+      "actual": "471 of 479",
+      "tolerance": null,
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "band J raw image count",
+      "tier": 1,
+      "pass": true,
+      "expected": 479,
+      "actual": 479,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band J chunks reported",
+      "tier": 1,
+      "pass": true,
+      "expected": ">0",
+      "actual": 15,
+      "tolerance": null,
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "band J overlap pairs",
+      "tier": 1,
+      "pass": true,
+      "expected": 2133,
+      "actual": 2133,
+      "tolerance": "2% relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band J images in coadd",
+      "tier": 1,
+      "pass": true,
+      "expected": ">= 460 (notebook: 471)",
+      "actual": 471,
+      "tolerance": "floor",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band J plane-fit failures within budget",
+      "tier": 1,
+      "pass": true,
+      "expected": "<= 25 (notebook J: 6)",
+      "actual": 6,
+      "tolerance": "budget",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band J reprojection attrition",
+      "tier": 1,
+      "pass": true,
+      "expected": ">0",
+      "actual": "471 of 479",
+      "tolerance": null,
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "band K raw image count",
+      "tier": 1,
+      "pass": true,
+      "expected": 479,
+      "actual": 479,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band K chunks reported",
+      "tier": 1,
+      "pass": true,
+      "expected": ">0",
+      "actual": 15,
+      "tolerance": null,
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "band K images in coadd",
+      "tier": 1,
+      "pass": true,
+      "expected": ">= 460 (notebook: None)",
+      "actual": 471,
+      "tolerance": "floor",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band K plane-fit failures within budget",
+      "tier": 1,
+      "pass": true,
+      "expected": "<= 25 (notebook J: None)",
+      "actual": 6,
+      "tolerance": "budget",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "band K reprojection attrition",
+      "tier": 1,
+      "pass": true,
+      "expected": ">0",
+      "actual": "471 of 479",
+      "tolerance": null,
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits dimensions",
+      "tier": 1,
+      "pass": true,
+      "expected": "10121x10527",
+      "actual": "10121x10527",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits BUNIT inherited from template",
+      "tier": 1,
+      "pass": true,
+      "expected": "JY/BEAM",
+      "actual": "JY/BEAM",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits CRVAL1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "266.366790598",
+      "actual": 266.366790598,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits CRVAL2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "-29.2213778092",
+      "actual": -29.2213778092,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits CRPIX1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "5072.5",
+      "actual": 5072.5,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits CRPIX2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "5265.5",
+      "actual": 5265.5,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits CDELT1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "-0.000305556",
+      "actual": -0.000305556,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits CDELT2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "0.000305556",
+      "actual": 0.000305556,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits CTYPE1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "RA---TAN",
+      "actual": "RA---TAN",
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massh.fits CTYPE2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "DEC--TAN",
+      "actual": "DEC--TAN",
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits dimensions",
+      "tier": 1,
+      "pass": true,
+      "expected": "10121x10527",
+      "actual": "10121x10527",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits BUNIT inherited from template",
+      "tier": 1,
+      "pass": true,
+      "expected": "JY/BEAM",
+      "actual": "JY/BEAM",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits CRVAL1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "266.366790598",
+      "actual": 266.366790598,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits CRVAL2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "-29.2213778092",
+      "actual": -29.2213778092,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits CRPIX1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "5072.5",
+      "actual": 5072.5,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits CRPIX2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "5265.5",
+      "actual": 5265.5,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits CDELT1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "-0.000305556",
+      "actual": -0.000305556,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits CDELT2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "0.000305556",
+      "actual": 0.000305556,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits CTYPE1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "RA---TAN",
+      "actual": "RA---TAN",
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massj.fits CTYPE2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "DEC--TAN",
+      "actual": "DEC--TAN",
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits dimensions",
+      "tier": 1,
+      "pass": true,
+      "expected": "10121x10527",
+      "actual": "10121x10527",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits BUNIT inherited from template",
+      "tier": 1,
+      "pass": true,
+      "expected": "JY/BEAM",
+      "actual": "JY/BEAM",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits CRVAL1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "266.366790598",
+      "actual": 266.366790598,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits CRVAL2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "-29.2213778092",
+      "actual": -29.2213778092,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits CRPIX1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "5072.5",
+      "actual": 5072.5,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits CRPIX2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "5265.5",
+      "actual": 5265.5,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits CDELT1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "-0.000305556",
+      "actual": -0.000305556,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits CDELT2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "0.000305556",
+      "actual": 0.000305556,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits CTYPE1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "RA---TAN",
+      "actual": "RA---TAN",
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "2massk.fits CTYPE2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "DEC--TAN",
+      "actual": "DEC--TAN",
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits dimensions",
+      "tier": 1,
+      "pass": true,
+      "expected": "10121x10527",
+      "actual": "10121x10527",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits BUNIT inherited from template",
+      "tier": 1,
+      "pass": true,
+      "expected": "JY/BEAM",
+      "actual": "JY/BEAM",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits CRVAL1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "266.366790598",
+      "actual": 266.366790598,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits CRVAL2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "-29.2213778092",
+      "actual": -29.2213778092,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits CRPIX1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "5072.5",
+      "actual": 5072.5,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits CRPIX2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "5265.5",
+      "actual": 5265.5,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits CDELT1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "-0.000305556",
+      "actual": -0.000305556,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits CDELT2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "0.000305556",
+      "actual": 0.000305556,
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits CTYPE1 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "RA---TAN",
+      "actual": "RA---TAN",
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected.fits CTYPE2 matches region.hdr",
+      "tier": 1,
+      "pass": true,
+      "expected": "DEC--TAN",
+      "actual": "DEC--TAN",
+      "tolerance": "1e-9 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected data minimum",
+      "tier": 1,
+      "pass": true,
+      "expected": -41.0209846496582,
+      "actual": -41.0209846496582,
+      "tolerance": "0.0001 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected data maximum",
+      "tier": 1,
+      "pass": true,
+      "expected": 11176.1787109375,
+      "actual": 11176.1787109375,
+      "tolerance": "0.0001 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected stretch floor",
+      "tier": 1,
+      "pass": true,
+      "expected": 27.89344589703572,
+      "actual": 27.89344589703572,
+      "tolerance": "0.0001 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "uncorrected stretch ceiling",
+      "tier": 1,
+      "pass": true,
+      "expected": 11176.1787109375,
+      "actual": 11176.1787109375,
+      "tolerance": "0.0001 relative",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2MASS_small.png geometry",
+      "tier": 2,
+      "pass": true,
+      "expected": "(1000, 961, 3)",
+      "actual": "(1000, 961, 3)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2MASS_small.png SSIM",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 0.980",
+      "actual": 1.0,
+      "tolerance": "similarity",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2MASS_small.png PSNR (dB)",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 35.0",
+      "actual": 98.26,
+      "tolerance": "dB",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2MASS_small.png mean |\u0394| per channel",
+      "tier": 2,
+      "pass": true,
+      "expected": "<= 2.00",
+      "actual": 0.0,
+      "tolerance": "levels",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massh_small.png geometry",
+      "tier": 2,
+      "pass": true,
+      "expected": "(1000, 961, 3)",
+      "actual": "(1000, 961, 3)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massh_small.png SSIM",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 0.980",
+      "actual": 1.0,
+      "tolerance": "similarity",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massh_small.png PSNR (dB)",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 35.0",
+      "actual": Infinity,
+      "tolerance": "dB",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massh_small.png mean |\u0394| per channel",
+      "tier": 2,
+      "pass": true,
+      "expected": "<= 2.00",
+      "actual": 0.0,
+      "tolerance": "levels",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massj_small.png geometry",
+      "tier": 2,
+      "pass": true,
+      "expected": "(1000, 961, 3)",
+      "actual": "(1000, 961, 3)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massj_small.png SSIM",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 0.980",
+      "actual": 1.0,
+      "tolerance": "similarity",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massj_small.png PSNR (dB)",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 35.0",
+      "actual": Infinity,
+      "tolerance": "dB",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massj_small.png mean |\u0394| per channel",
+      "tier": 2,
+      "pass": true,
+      "expected": "<= 2.00",
+      "actual": 0.0,
+      "tolerance": "levels",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massk_small.png geometry",
+      "tier": 2,
+      "pass": true,
+      "expected": "(1000, 961, 3)",
+      "actual": "(1000, 961, 3)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massk_small.png SSIM",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 0.980",
+      "actual": 1.0,
+      "tolerance": "similarity",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massk_small.png PSNR (dB)",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 35.0",
+      "actual": Infinity,
+      "tolerance": "dB",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail 2massk_small.png mean |\u0394| per channel",
+      "tier": 2,
+      "pass": true,
+      "expected": "<= 2.00",
+      "actual": 0.0,
+      "tolerance": "levels",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail MeerKAT_2MASS_small.png geometry",
+      "tier": 2,
+      "pass": true,
+      "expected": "(1000, 961, 3)",
+      "actual": "(1000, 961, 3)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail MeerKAT_2MASS_small.png SSIM",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 0.980",
+      "actual": 1.0,
+      "tolerance": "similarity",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail MeerKAT_2MASS_small.png PSNR (dB)",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 35.0",
+      "actual": 98.93,
+      "tolerance": "dB",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail MeerKAT_2MASS_small.png mean |\u0394| per channel",
+      "tier": 2,
+      "pass": true,
+      "expected": "<= 2.00",
+      "actual": 0.0,
+      "tolerance": "levels",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail MeerKAT_small.png geometry",
+      "tier": 2,
+      "pass": true,
+      "expected": "(1000, 961, 3)",
+      "actual": "(1000, 961, 3)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail MeerKAT_small.png SSIM",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 0.980",
+      "actual": 1.0,
+      "tolerance": "similarity",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail MeerKAT_small.png PSNR (dB)",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 35.0",
+      "actual": Infinity,
+      "tolerance": "dB",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail MeerKAT_small.png mean |\u0394| per channel",
+      "tier": 2,
+      "pass": true,
+      "expected": "<= 2.00",
+      "actual": 0.0,
+      "tolerance": "levels",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail uncorrected_small.png geometry",
+      "tier": 2,
+      "pass": true,
+      "expected": "(1000, 961, 3)",
+      "actual": "(1000, 961, 3)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail uncorrected_small.png SSIM",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 0.980",
+      "actual": 1.0,
+      "tolerance": "similarity",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail uncorrected_small.png PSNR (dB)",
+      "tier": 2,
+      "pass": true,
+      "expected": ">= 35.0",
+      "actual": Infinity,
+      "tolerance": "dB",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "thumbnail uncorrected_small.png mean |\u0394| per channel",
+      "tier": 2,
+      "pass": true,
+      "expected": "<= 2.00",
+      "actual": 0.0,
+      "tolerance": "levels",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massh.fits shape",
+      "tier": 3,
+      "pass": true,
+      "expected": "(10527, 10121)",
+      "actual": "(10527, 10121)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massh.fits NaN mask",
+      "tier": 3,
+      "pass": true,
+      "expected": "0 differing pixels",
+      "actual": 0,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massh.fits max |\u0394|",
+      "tier": 3,
+      "pass": true,
+      "expected": "<= 0.0103 (1e-06 x dynamic range 1.03e+04)",
+      "actual": "0",
+      "tolerance": "relative to range",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massh.fits RMS \u0394",
+      "tier": 3,
+      "pass": true,
+      "expected": "<= 0.0103",
+      "actual": "0",
+      "tolerance": "relative to range",
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massj.fits shape",
+      "tier": 3,
+      "pass": true,
+      "expected": "(10527, 10121)",
+      "actual": "(10527, 10121)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massj.fits NaN mask",
+      "tier": 3,
+      "pass": true,
+      "expected": "0 differing pixels",
+      "actual": 0,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massj.fits max |\u0394|",
+      "tier": 3,
+      "pass": true,
+      "expected": "<= 0.0112 (1e-06 x dynamic range 1.12e+04)",
+      "actual": "0",
+      "tolerance": "relative to range",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massj.fits RMS \u0394",
+      "tier": 3,
+      "pass": true,
+      "expected": "<= 0.0112",
+      "actual": "0",
+      "tolerance": "relative to range",
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massk.fits shape",
+      "tier": 3,
+      "pass": true,
+      "expected": "(10527, 10121)",
+      "actual": "(10527, 10121)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massk.fits NaN mask",
+      "tier": 3,
+      "pass": true,
+      "expected": "0 differing pixels",
+      "actual": 0,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massk.fits max |\u0394|",
+      "tier": 3,
+      "pass": true,
+      "expected": "<= 0.0107 (1e-06 x dynamic range 1.07e+04)",
+      "actual": "0",
+      "tolerance": "relative to range",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline 2massk.fits RMS \u0394",
+      "tier": 3,
+      "pass": true,
+      "expected": "<= 0.0107",
+      "actual": "0",
+      "tolerance": "relative to range",
+      "gating": false,
+      "detail": null
+    },
+    {
+      "name": "baseline uncorrected.fits shape",
+      "tier": 3,
+      "pass": true,
+      "expected": "(10527, 10121)",
+      "actual": "(10527, 10121)",
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline uncorrected.fits NaN mask",
+      "tier": 3,
+      "pass": true,
+      "expected": "0 differing pixels",
+      "actual": 0,
+      "tolerance": "exact",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline uncorrected.fits max |\u0394|",
+      "tier": 3,
+      "pass": true,
+      "expected": "<= 0.0112 (1e-06 x dynamic range 1.12e+04)",
+      "actual": "0",
+      "tolerance": "relative to range",
+      "gating": true,
+      "detail": null
+    },
+    {
+      "name": "baseline uncorrected.fits RMS \u0394",
+      "tier": 3,
+      "pass": true,
+      "expected": "<= 0.0112",
+      "actual": "0",
+      "tolerance": "relative to range",
+      "gating": false,
+      "detail": null
+    }
+  ]
+}

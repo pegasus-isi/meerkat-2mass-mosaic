@@ -1,0 +1,53 @@
+# --------------------------------------------------------------- run artifacts
+# output/ is ~4 GB of float64 FITS mosaics and full-size PNGs; runs/ is Pegasus
+# submit directories (one carries a pegasus-worker tarball). Both are products,
+# not sources -- DETERMINISM.md records the MD5s that matter.
+output/
+runs/
+scratch/
+
+# ------------------------------------------------------------------ input data
+# ~3 GB: the MeerKAT template plus 1437 2MASS Atlas images. Re-acquire with
+#   apptainer exec Apptainer/Montage_Container.sif bin/prefetch.py
+# The manifest it writes is the contract; the pixels are replaceable.
+data/
+
+# The Tier 3 baseline mosaics are 3.4 GB (8 x 852 MB). Rebuild with
+# bin/run_notebook_baseline.py. The notebook expectations and thumbnails under
+# reference/ ARE committed -- the validate job needs them.
+reference/baseline/
+
+# ------------------------------------------------------------ container images
+# ~500 MB. Build from Apptainer/Montage_Container.def, which is committed.
+*.sif
+
+# -------------------------------------------------------- generated catalogs
+# All of these are written by workflow_generator.py on every run, and
+# replicas.yml / transformations.yml / sites.yml embed ABSOLUTE paths from
+# whichever host generated them. Committing them would hand a clone paths that
+# do not exist on its machine. Regenerate with:
+#   ./workflow_generator.py
+workflow.yml
+workflow_subset.yml
+replicas.yml
+transformations.yml
+sites.yml
+catalogs/
+
+# ----------------------------------------------------------------------- python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ------------------------------------------------------------------------ local
+.claude/settings.local.json
+.DS_Store
+
+# ------------------------------------------------------------------ slide deck
+# Presentation material is deliberately NOT published here. build_deck.py holds
+# the full slide text, so ignoring only the built .pptx/.pdf would still expose
+# the deck's content -- the whole slides/ tree stays local.
+slides/
+MeerKAT_Notebook_vs_Pegasus.pptx
+MeerKAT_Notebook_vs_Pegasus.pdf

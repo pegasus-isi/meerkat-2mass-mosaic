@@ -1,0 +1,98 @@
+Bootstrap: docker
+From: python:3.10-bookworm
+
+# Montage / MeerKAT-2MASS mosaic container.
+#
+# Version pins are chosen to match the environment of the reference notebook
+# ($HOME/work/workflows/MeerKAT.ipynb), which was executed 2024-08-09:
+#
+#   MontagePy 2.2.0  released 2024-05-05  <- current at notebook run time
+#   MontagePy 2.3.0  released 2025-06-05  <- released AFTER the notebook run
+#
+# Pinning 2.2.0 is what makes the Tier 3 pixel-level comparison in SPEC.md a
+# like-for-like test rather than a comparison across Montage releases.
+# MontagePy 2.2.0 publishes a manylinux cp310 wheel, so the base image is
+# pinned to Python 3.10 and nothing is compiled.
+#
+# The base image is python:3.10-bookworm rather than ubuntu:22.04 because this
+# host can only build unprivileged: apptainer's --fakeroot fails here (the
+# host's libfakeroot.so requires GLIBC_2.38, newer than the container's), and
+# without fakeroot apt-get cannot perform its privilege separation
+# ("setgroups: Operation not permitted"). A base image that already carries
+# Python, pip, curl and libgomp lets %post use pip alone, which needs no
+# privilege dropping and therefore builds rootlessly.
+#
+# Build:
+#   apptainer build --ignore-fakeroot-command \
+#       Apptainer/Montage_Container.sif Apptainer/Montage_Container.def
+
+%post
+    # Montage itself. MontagePy bundles the Montage C library, so every Montage
+    # module is reached through the Python API and no separate CLI build is
+    # required.
+    pip3 install --no-cache-dir MontagePy==2.2.0
+
+    # Notebook-era support stack. cv2 provides addWeighted/resize, which carry
+    # the notebook's stretch and blend arithmetic; headless because jobs have no
+    # display. astropy/scikit-image/numpy are used only by the validation and
+    # reference-extraction steps.
+    pip3 install --no-cache-dir \
+        numpy==1.26.4 \
+        opencv-python-headless==4.10.0.84 \
+        astropy==6.1.2 \
+        scikit-image==0.24.0 \
+        importlib_resources==6.4.0
+
+    # python3 is already the image default; no symlink needed.
+
+    # Record what actually got installed, so provenance.json can quote the
+    # image rather than assume it matched the pins above.
+    # MontagePy exposes no __version__ attribute, so the installed distribution
+    # metadata is the only authoritative source for the pin that matters most.
+    python3 - <<'EOF' > /opt/versions.json
+import json, platform
+from importlib.metadata import version, PackageNotFoundError
+v = {"python": platform.python_version()}
+for dist in ["MontagePy", "opencv-python-headless", "numpy", "astropy",
+             "scikit-image", "importlib_resources"]:
+    try:
+        v[dist] = version(dist)
+    except PackageNotFoundError:
+        v[dist] = "NOT INSTALLED"
+print(json.dumps(v, indent=2))
+EOF
+    cat /opt/versions.json
+
+%environment
+    export PYTHONUNBUFFERED=1
+    export LC_ALL=C
+
+%test
+    # Fail the build if any module the workflow relies on is missing. The list
+    # is exactly the set of Montage modules the notebook uses -- the chunked
+    # design in SPEC.md calls no others.
+    python3 - <<'EOF'
+import sys
+from MontagePy.main import (mGetHdr, mExamine, mImgtbl, mProjExec, mOverlaps,
+                            mDiffFitExec, mBgModel, mBgExec, mAdd, mViewer)
+from MontagePy.archive import mArchiveDownload
+import cv2, numpy, astropy, skimage
+import MontagePy
+print("MontagePy", MontagePy.__version__ if hasattr(MontagePy, "__version__") else "?")
+print("cv2", cv2.__version__, "numpy", numpy.__version__, "astropy", astropy.__version__)
+print("all required Montage modules importable")
+EOF
+
+%labels
+    Description Montage Image Mosaic Engine for the MeerKAT/2MASS Pegasus workflow
+    MontagePy 2.2.0
+    NotebookReference MeerKAT.ipynb (2024-08-09)
+
+%help
+    Container for the meerkat-2mass-mosaic Pegasus workflow.
+
+    Montage is used through the MontagePy Python API. Interactive poking:
+        apptainer shell Montage_Container.sif
+        python3 -c "from MontagePy.main import mExamine; print(mExamine('x.fits'))"
+
+    Installed versions are recorded at /opt/versions.json.
