@@ -1,5 +1,23 @@
 # Validation report — MeerKAT / 2MASS mosaic workflow
 
+> **Provenance.** This report is the **`ssh pegasus` cluster in archive mode**
+> (`pegasus-submit`, 4 x 8-core / 16 GB across ATLA, GPN, NCSA, NEWY,
+> Pegasus 5.1.2), 2026-09-03, from the DAG in `runs/archive-full/`. It is
+> `DETERMINISM.md`'s fifth provenance and the only one of the three Tier 3
+> reports whose raw pixels were **not** read from a local copy: all 1437 2MASS
+> images were fetched from IRSA by the chunk jobs themselves, with input staging
+> bypassed per input.
+>
+> Produced on the submit host rather than by the in-DAG `validate` job, which
+> reports 93 passed / 1 skipped because the 16 baseline pixel checks need the
+> 3.4 GB `reference/baseline/` mosaics that are deliberately not staged to a
+> worker node:
+>
+> ```
+> apptainer exec Apptainer/Montage_Container.sif python3 bin/validate.py \
+>     --results-dir output --reference-dir reference --region-json data/region.json
+> ```
+
 Comparison against `MeerKAT.ipynb` (run 2024-08-09 13:26:10, MontagePy 2.2.0).
 
 | | |
