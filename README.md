@@ -35,8 +35,10 @@ apptainer exec Apptainer/Montage_Container.sif bin/prefetch.py
 # 4. Check the wrappers work, on 8 images, outside Pegasus (~5 min)
 ./run_manual.sh
 
-# 5. Generate and submit
-./workflow_generator.py --submit
+# 5. Generate, then plan and submit (the generator prints this command;
+#    -e condorpool: a plain HTCondor pool with no site catalog)
+./workflow_generator.py -e condorpool
+pegasus-plan --dir submit -s condorpool -o local --output-dir "$PWD/output" --cleanup inplace --submit workflow.yml
 ```
 
 Steps 1–3 are one-time. Step 5 can then be repeated indefinitely — *planning*
@@ -214,8 +216,23 @@ seconds. See `SPEC.md` §4.5.
 | `--skip-uncorrected` | off | skip the illustrative uncorrected J coadd |
 | `--skip-blend` | off | stop after the per-band mosaics |
 | `--skip-validate` | off | omit the comparison job |
-| `--execution-site` | `condorpool` | |
-| `--submit` | off | plan and submit inline with `cleanup=inplace` |
+| `-s`, `--hosted-site-catalog FILE` | none (`~/.pegasusrc` if set) | [hosted site catalog](https://github.com/pegasushub/pegasus-site-catalogs/tree/main/conf) to plan against, e.g. `access-pegasus.yml`, `unity.yml` |
+| `-e`, `--execution-site-name` (alias `--execution-site`) | `compute` | `condorpool` on a plain HTCondor pool with no site catalog |
+| `-o`, `--output` | `workflow.yml` | |
+
+Following [pegasus-gromacs](https://github.com/pegasus-isi/pegasus-gromacs), the
+generator writes no site catalog — jobs run on `compute`, defined by a hosted
+catalog (`-s`, or `pegasus.catalog.site.repo.file` in `~/.pegasusrc`) — and it
+never plans or submits: it prints the `pegasus-plan` command. On a plain
+HTCondor pool, `-e condorpool` uses the site Pegasus builds by default. The
+notebook `MeerKAT-Mosaic-Workflow.ipynb` drives the same
+`MeerKATMosaicWorkflow` class interactively (settings parsed by the CLI's own
+`build_parser()`; `create_sites_catalog()` writes a local HTCondor `compute`
+site for it; submitting is an explicit cell):
+
+```bash
+jupyter lab MeerKAT-Mosaic-Workflow.ipynb
+```
 
 Stretch and blend constants (`--composite-contrast 2.0`,
 `--overlay-brightness -128.0`, `--blend-alpha 0.6`, `--blend-gamma 64.0`, …) all
@@ -238,14 +255,12 @@ about it and relaxes the count and pixel-statistic checks accordingly.
 ## Running
 
 ```bash
-# generate only
-./workflow_generator.py
+# generate (it never plans or submits; it prints the command below)
+./workflow_generator.py -e condorpool
 
-# then plan by hand — note --cleanup inplace
-pegasus-plan --submit -s condorpool -o local --cleanup inplace workflow.yml
-
-# or inline
-./workflow_generator.py --submit
+# then plan and submit — note --cleanup inplace, and --output-dir: with no
+# local site in a site catalog, Pegasus would stage outputs to wf-output/
+pegasus-plan --dir submit -s condorpool -o local --output-dir "$PWD/output" --cleanup inplace --submit workflow.yml
 
 # monitor
 pegasus-status <run-dir>

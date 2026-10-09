@@ -32,7 +32,14 @@ the design; the short version:
 Usage:
     ./workflow_generator.py                          # all three bands
     ./workflow_generator.py --subset 20 --bands J    # fast smoke test
-    ./workflow_generator.py --submit                 # plan and submit inline
+    ./workflow_generator.py -e condorpool            # plain HTCondor pool, no site catalog
+    ./workflow_generator.py -s unity.yml             # hosted site catalog
+
+Sites follow pegasus-isi/pegasus-gromacs: jobs run on a site named "compute",
+defined by a centrally hosted site catalog (-s FILE, or one in ~/.pegasusrc).
+The generator writes the workflow and catalogs but no site catalog, and never
+plans or submits: it prints the pegasus-plan command. MeerKAT-Mosaic-Workflow.ipynb
+drives the same class interactively.
 """
 
 import argparse
@@ -46,8 +53,9 @@ import sys
 from pathlib import Path
 
 from Pegasus.api import (Container, Directory, File, FileServer, Job, Operation,
-                         Properties, ReplicaCatalog, Site, SiteCatalog,
-                         Transformation, TransformationCatalog, Workflow)
+                         PegasusClientError, Properties, ReplicaCatalog, Site,
+                         SiteCatalog, Transformation, TransformationCatalog,
+                         Workflow)
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "bin"))
 import mtbl  # noqa: E402
@@ -297,9 +305,15 @@ class MeerKATMosaicWorkflow:
 
     # ---------------------------------------------------------------- catalogs
 
-    def create_pegasus_properties(self):
+    def create_pegasus_properties(self, hosted_site_catalog=None):
         self.props = Properties()
         self.props["pegasus.transfer.threads"] = "16"
+        if hosted_site_catalog:
+            # Use one of Pegasus' centrally hosted site catalogs instead of
+            # a locally generated one. pegasus-plan downloads and caches the
+            # named file from the catalog repository at plan time.
+            # https://pegasus.isi.edu/documentation/reference-guide/catalogs.html#centrally-hosted-site-catalogs
+            self.props["pegasus.catalog.site.repo.file"] = hosted_site_catalog
         # Chunk archives are large; keep integrity checking but avoid rechecking
         # every staged file on retry.
         self.props["pegasus.integrity.checking"] = "nosymlink"
@@ -309,7 +323,11 @@ class MeerKATMosaicWorkflow:
         # Archive mode bypasses per input, on the raw images only; see
         # _JOB_BYPASS_PARAM for what the global flag breaks.
 
-    def create_sites_catalog(self):
+    # Not used by the CLI — pegasus-plan resolves the site catalog from a
+    # centrally hosted one instead (see -s/--hosted-site-catalog). Kept for
+    # notebook use, when a self-contained, locally generated HTCondor site
+    # catalog is wanted.
+    def create_sites_catalog(self, exec_site_name="compute"):
         self.sc = SiteCatalog()
         local = Site("local").add_directories(
             Directory(Directory.SHARED_SCRATCH, self.shared_scratch_dir)
@@ -320,13 +338,13 @@ class MeerKATMosaicWorkflow:
                                          Operation.ALL)),
         )
         exec_site = (
-            Site(self.args.execution_site)
+            Site(exec_site_name)
             .add_condor_profile(universe="vanilla")
             .add_pegasus_profile(style="condor")
         )
         self.sc.add_sites(local, exec_site)
 
-    def create_transformation_catalog(self):
+    def create_transformation_catalog(self, exec_site_name="compute"):
         self.tc = TransformationCatalog()
 
         sif = os.path.join(self.wf_dir, "Apptainer", "Montage_Container.sif")
@@ -356,7 +374,7 @@ class MeerKATMosaicWorkflow:
                 continue
             transformations.append(
                 Transformation(name,
-                               site=self.args.execution_site,
+                               site=exec_site_name,
                                pfn=wrapper,
                                is_stageable=True,
                                container=container)
@@ -805,6 +823,46 @@ class MeerKATMosaicWorkflow:
 
     # ------------------------------------------------------------------ output
 
+    # ------------------------------------------------------------------
+    # Plan / run / monitor (thin wrappers over the Pegasus API Workflow
+    # object, for interactive use e.g. from a Jupyter notebook)
+    # ------------------------------------------------------------------
+    def plan_submit(self, exec_site_name="compute", raise_errors=False):
+        try:
+            # cleanup=inplace matters here: intermediate chunk archives are
+            # ~9 GB and are removed as soon as no consumer remains. See
+            # SPEC.md 4.6.
+            self.wf.plan(
+                dir="submit",
+                sites=[exec_site_name],
+                output_sites=["local"],
+                cleanup="inplace",
+                verbose=1,
+                submit=True,
+            )
+        except PegasusClientError as e:
+            print(e)
+            if raise_errors:
+                raise
+
+    def status(self):
+        try:
+            self.wf.status(long=True)
+        except PegasusClientError as e:
+            print(e)
+
+    def wait(self):
+        try:
+            self.wf.wait()
+        except PegasusClientError as e:
+            print(e)
+
+    def statistics(self):
+        try:
+            self.wf.statistics()
+        except PegasusClientError as e:
+            print(e)
+
     def write(self):
         if self.sc is not None:
             self.sc.write()
@@ -827,12 +885,27 @@ class MeerKATMosaicWorkflow:
         return total
 
 
-def main():
+def build_parser():
+    """The CLI's argument parser. The notebook parses its own settings with it,
+    so both entry points share one set of options and defaults."""
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-o", "--output", default="workflow.yml")
-    parser.add_argument("-e", "--execution-site", default="condorpool")
-    parser.add_argument("-s", "--skip-sites-catalog", action="store_true")
+    parser.add_argument("-s", "--hosted-site-catalog", metavar="FILE",
+                        default=None,
+                        help="Name of a Pegasus centrally hosted site catalog "
+                             "to plan against (e.g. access-pegasus.yml), "
+                             "instead of a locally generated one. Sets "
+                             "pegasus.catalog.site.repo.file; see "
+                             "https://pegasus.isi.edu/documentation/"
+                             "reference-guide/catalogs.html"
+                             "#centrally-hosted-site-catalogs")
+    # --execution-site is kept as an alias: the runbooks and reports use it.
+    parser.add_argument("-e", "--execution-site-name", "--execution-site",
+                        dest="execution_site", metavar="STR", default="compute",
+                        help="Execution site name (default: compute). Use "
+                             "condorpool on a plain HTCondor pool with no site "
+                             "catalog")
     parser.add_argument("--bands", nargs="+", default=["J", "H", "K"],
                         help="bands, in blue/green/red order (default: J H K)")
     parser.add_argument("--proj-chunk-size", type=int, default=32,
@@ -867,9 +940,11 @@ def main():
     parser.add_argument("--overlay-brightness", type=float, default=-128.0)
     parser.add_argument("--blend-alpha", type=float, default=0.6)
     parser.add_argument("--blend-gamma", type=float, default=64.0)
-    parser.add_argument("--submit", action="store_true",
-                        help="plan and submit immediately")
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = build_parser().parse_args()
     args.bands = normalise_bands(args.bands)
 
     workflow = MeerKATMosaicWorkflow(args)
@@ -877,10 +952,13 @@ def main():
     workflow.check_unique_filenames()
     workflow.split_chunks()
 
-    workflow.create_pegasus_properties()
-    if not args.skip_sites_catalog:
-        workflow.create_sites_catalog()
-    workflow.create_transformation_catalog()
+    logger.info("Execution site: %s", args.execution_site)
+    logger.info("Hosted site catalog: %s", args.hosted_site_catalog
+                or "(none — supply your own site catalog)")
+
+    workflow.create_pegasus_properties(
+        hosted_site_catalog=args.hosted_site_catalog)
+    workflow.create_transformation_catalog(args.execution_site)
     workflow.create_replica_catalog()
     workflow.create_workflow()
     workflow.write()
@@ -901,15 +979,14 @@ def main():
         logger.warning("Do not expect a bit-identical match against a prefetch "
                        "baseline until bin/prefetch.py --compare-tables passes.")
 
-    if args.submit:
-        # cleanup=inplace matters here: intermediate chunk archives are ~9 GB
-        # and are removed as soon as no consumer remains. See SPEC.md 4.6.
-        logger.info("Planning and submitting (cleanup=inplace)")
-        workflow.wf.plan(sites=[args.execution_site], output_sites=["local"],
-                         cleanup="inplace", submit=True)
-    else:
-        logger.info("To submit:\n    pegasus-plan --submit -s %s -o local "
-                    "--cleanup inplace %s", args.execution_site, args.output)
+    # The generator never plans or submits. cleanup=inplace matters here:
+    # intermediate chunk archives are ~9 GB and are removed as soon as no
+    # consumer remains (SPEC.md 4.6). --output-dir keeps outputs in output/:
+    # the CLI writes no local site, and Pegasus's default one would stage them
+    # to wf-output/ instead.
+    logger.info("Plan and submit:\n    pegasus-plan --dir submit -s %s -o local "
+                "--output-dir %s --cleanup inplace --submit %s",
+                args.execution_site, workflow.local_storage_dir, args.output)
 
 
 if __name__ == "__main__":

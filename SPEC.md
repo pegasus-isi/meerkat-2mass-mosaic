@@ -503,7 +503,7 @@ Notebook values are defaults, not hard-codes:
 | `--subset N` | off | first N images per band — full end-to-end run in minutes |
 | `--skip-uncorrected` | off | Q7 |
 | `--skip-blend` | off | stop after the 2MASS composite |
-| `--execution-site` | `condorpool` | Q4 |
+| `-e`, `--execution-site-name` (alias `--execution-site`) | `compute` | Q4: `-e condorpool` on this host (a plain HTCondor pool with no site catalog); `-s/--hosted-site-catalog FILE` names a hosted catalog elsewhere |
 
 `--subset 20` must give a complete valid run in a few minutes. That is the development loop; a
 50-minute turnaround is not.
@@ -731,7 +731,7 @@ Definition of done:
    seven thumbnails, and Tier 3 `max|Δ|` within tolerance on all three mosaics. A reviewer answers
    "does this reproduce the notebook?" by reading one file.
 3. **Repeatable without re-download** — `prefetch.py` once (~4 GB, ~10 min); every subsequent
-   `workflow_generator.py --submit` consumes the frozen manifest. Verified by re-running with the
+   generate-and-plan (`workflow_generator.py` + the `pegasus-plan` line it prints) consumes the frozen manifest. Verified by re-running with the
    network unavailable.
 4. **Parallelism demonstrated** — `pegasus-statistics` showing ~59 tasks, max concurrency ≥ 8, wall
    clock **≤ 30 min against the notebook's 50** on 8 cores, plus a projection for a larger pool.
