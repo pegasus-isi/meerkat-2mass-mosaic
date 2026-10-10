@@ -69,7 +69,8 @@ apptainer exec Apptainer/Montage_Container.sif bin/prefetch.py
 apptainer exec Apptainer/Montage_Container.sif bin/prefetch.py --verify
 
 # 3. the workflow — produces output/2mass{j,h,k}.fits to be compared
-./workflow_generator.py --submit --min-images 460
+./workflow_generator.py -e condorpool --min-images 460
+pegasus-plan --dir submit -s condorpool -o local --output-dir "$PWD/output" --cleanup inplace --submit workflow.yml
 
 # 4. the serial baseline — produces reference/baseline/*.fits
 apptainer exec Apptainer/Montage_Container.sif bin/run_notebook_baseline.py
@@ -92,10 +93,12 @@ run them in sequence if you want a clean parallelism measurement from step 3.
 ### Step 3 — the workflow
 
 ```bash
-./workflow_generator.py --submit --min-images 460
+./workflow_generator.py -e condorpool --min-images 460
+pegasus-plan --dir submit -s condorpool -o local --output-dir "$PWD/output" --cleanup inplace --submit workflow.yml
 ```
 
-That is the whole full-field invocation. Everything else already defaults to the
+That is the whole full-field invocation (the generator prints the
+`pegasus-plan` line; it never submits by itself). Everything else already defaults to the
 notebook's behaviour:
 
 | Flag | Default | Leave it alone because |
@@ -104,7 +107,7 @@ notebook's behaviour:
 | `--proj-chunk-size 32` | `32` | 479 images → 15 chunks/band → 45 parallel reprojection jobs |
 | `--quick-mode` | on | this is the notebook's `quickMode=True`; `--no-quick-mode` changes the pixels and Tier 1/2 will fail |
 | `--min-coadd-images 460` | `460` | validation floor; the notebook coadds 471 |
-| `--execution-site condorpool` | `condorpool` | |
+| `-e condorpool` | `compute` | this host is a plain HTCondor pool with no site catalog; use the default `compute` with `-s <catalog>.yml` elsewhere |
 
 The two you may want to add:
 
@@ -121,14 +124,14 @@ Do **not** pass for a Tier 3 run:
   (data min/max and stretch limits).
 - `--skip-blend` / `--skip-validate` — you need the validate job.
 
-The generator plans with `cleanup=inplace`, which matters: the intermediate chunk
+Plan with `--cleanup inplace`, which matters: the intermediate chunk
 archives are ~9 GB and without it the volume can fill. To plan into a named run
 directory instead of the default submit dir:
 
 ```bash
-./workflow_generator.py --min-images 460          # generate only
-pegasus-plan --submit -s condorpool -o local --cleanup inplace \
-    --dir runs --relative-dir tier3 workflow.yml
+./workflow_generator.py -e condorpool --min-images 460
+pegasus-plan --submit -s condorpool -o local --output-dir "$PWD/output" \
+    --cleanup inplace --dir runs --relative-dir tier3 workflow.yml
 ```
 
 ### Step 4 — the baseline
@@ -171,7 +174,8 @@ plus 4 GB of inputs, plus ~20 GB for the baseline. **Budget ~70 GB.** If the
 volume is smaller, run bands one at a time:
 
 ```bash
-./workflow_generator.py --submit --bands J --min-images 460
+./workflow_generator.py -e condorpool --bands J --min-images 460
+pegasus-plan --dir submit -s condorpool -o local --output-dir "$PWD/output" --cleanup inplace --submit workflow.yml
 apptainer exec Apptainer/Montage_Container.sif bin/run_notebook_baseline.py --bands J
 ```
 
@@ -182,13 +186,15 @@ apptainer exec Apptainer/Montage_Container.sif bin/run_notebook_baseline.py --ba
 Studio runs the same commands; the differences are environmental.
 
 1. **Working directory must be the project root.** The generator derives every
-   catalog path from its own location, and `sites.yml` hard-codes
-   `scratch/` and `output/` under it. Launch from `meerkat-2mass-mosaic/`.
+   catalog path from its own location, and the `pegasus-plan` line it prints
+   sends outputs to `output/` under it (`--output-dir`). Launch from
+   `meerkat-2mass-mosaic/`.
 
-2. **Regenerate the catalogs on the host you plan on.** `sites.yml`,
-   `transformations.yml` and `replicas.yml` in the repo carry absolute paths from
-   whichever host wrote them (`/home/kthare10/work/...`). Running
-   `./workflow_generator.py` rewrites all three. Don't hand-edit them.
+2. **Regenerate the catalogs on the host you plan on.** `transformations.yml`
+   and `replicas.yml` carry absolute paths from whichever host wrote them
+   (`/home/kthare10/work/...`). Running `./workflow_generator.py` rewrites both.
+   Don't hand-edit them. It writes no `sites.yml`: the site comes from Studio's
+   site catalog (`-s`/`~/.pegasusrc`), or use `-e condorpool` on a plain pool.
 
 3. **`catalogs/<dag-stem>/chunks/` is per-DAG and cleared on each generation**
    (`SPEC.md` §9.3). Generating a second workflow while a first is still queued
